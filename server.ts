@@ -2,7 +2,7 @@ import cors from "cors";
 import dotenv from "dotenv";
 dotenv.config();
 
-const port = 5000;
+const port = process.env.PORT || 5000;
 
 import express from 'express';
 import db from "./config/db";

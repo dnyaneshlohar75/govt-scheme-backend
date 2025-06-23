@@ -54,7 +54,7 @@ export async function sendOneTimePassword(request: Request, response: Response) 
 }
 
 export async function verifyOneTimePassword(request: Request, response: Response) {
-    const { otp, aadharCardNumber } = request.body;
+    const {otp, aadharCardNumber} = request.body;
 
     try {
         const isUserExist = await db.user_table.findFirst({ where: { uidai_number: aadharCardNumber } });
@@ -65,20 +65,20 @@ export async function verifyOneTimePassword(request: Request, response: Response
             return;
         }
 
-        if (bcrypt.compareSync(otp, storedOTP)) {
+         if (bcrypt.compareSync(otp, storedOTP)) {
             const token = generateToken(isUserExist?.user_id as string);
 
             await redis.del(isUserExist?.mobile_number as string);
 
-            response.status(200).json({
+             response.status(200).json({
                 message: "OTP verified successfully",
                 token,
                 user: isUserExist,
             });
         } else {
-            response.status(400).json({ message: "Invalid OTP, try again" });
+             response.status(400).json({ message: "Invalid OTP, try again" });
         }
     } catch (error) {
         response.json({ error: error, message: "Something went wrong" }).status(500);
-    }
+    }  
 }
